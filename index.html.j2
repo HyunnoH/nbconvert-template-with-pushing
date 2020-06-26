@@ -1,0 +1,28 @@
+{% extends 'classic/index.html.j2'%}
+
+{% block footer_js %}
+{% block yennefer_footer %}
+<script type="text/javascript">
+  window.addEventListener('load', (event) => {
+    var t = document.getElementById("notebook-container") || document.getElementById("dashboard-container") || document.getElementsByClassName("main-container")[0] || document.getElementsByClassName("bk-root")[0];
+    if (t && t.offsetHeight) {
+    var e = function(t) {
+      try {
+        var e = t.offsetHeight
+        , n = getComputedStyle(t);
+        return n && n.marginTop && n.marginBottom ? e += parseInt(n.marginTop) + parseInt(n.marginBottom) : null
+      } catch (t) {
+        return console.error("An error occurred in outerHeight"),
+        null
+      }
+    }(t) + 30;
+    null !== e && (
+      parent.postMessage({
+      iFrameHeight: e
+    }, "*"))
+  }})
+</script>
+{% endblock yennefer_footer %}
+
+{% endblock footer_js %}
+
