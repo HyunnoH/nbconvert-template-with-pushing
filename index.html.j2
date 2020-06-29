@@ -25,7 +25,7 @@
     let alist = []
     as.length !== 0 && as.forEach(a => {
       const p = a.parentElement;
-      alist.push({text: p.innerText, tagName: p.tagName})
+      alist.push({text: p.innerText, tagName: p.tagName, id: p.id.replace('.', '')})
     })
     alist.length !== 0 && parent.postMessage({index: alist}, "*");
   }});
