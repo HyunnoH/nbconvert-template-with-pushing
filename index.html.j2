@@ -20,7 +20,35 @@
       parent.postMessage({
       iFrameHeight: e
     }, "*"))
-  }})
+
+    const as = document.querySelectorAll('.anchor-link');
+    let alist = []
+    as.length !== 0 && as.forEach(a => {
+      const p = a.parentElement;
+      alist.push({text: p.innerText, tagName: p.tagName})
+    })
+    alist.length !== 0 && parent.postMessage({index: alist}, "*");
+  }});
+
+  window.addEventListener('message', (e) => {
+    if(!e.data.origin) return;
+    const as = document.querySelectorAll('.anchor-link');
+    as.length !== 0 && as.forEach(a => {
+      const href =  `${e.data.origin.slice(0, e.data.origin.length)}${a.href.slice(a.href.indexOf('#'), a.href.length)}`.replace('.', '')
+      a.href = href;
+      a.target = '_parent';
+      a.parentElement.id = `${a.parentElement.id}`.replace('.', '')
+    })
+  })
+
+  window.addEventListener('message', (e) => {
+    if(!e.data.anchorDestination) return;
+    const uri = decodeURIComponent(e.data.anchorDestination).replace(/^#/, '');
+    const anc = document.getElementById(uri);
+    anc.scrollIntoView()
+  })
+  
+  
 </script>
 {% endblock yennefer_footer %}
 
