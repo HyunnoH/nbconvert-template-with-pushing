@@ -1,5 +1,15 @@
 {% extends 'classic/index.html.j2'%}
 
+{% block html_head_css %}
+<style type='text/css'>
+#notebook-container.container {
+    width: 100%;
+    padding: 0;
+  }
+</style>
+  
+{% endblock html_head_css %}
+
 {% block footer_js %}
 {% block yennefer_footer %}
 <script type="text/javascript">
@@ -21,17 +31,18 @@
       iFrameHeight: e
     }, "*"))
 
-    const as = document.querySelectorAll('.anchor-link');
+    const as = document.querySelectorAll('h1, h2, h3');
     let alist = []
-    as.length !== 0 && as.forEach(a => {
-      const p = a.parentElement;
-      alist.push({text: p.innerText, tagName: p.tagName, id: p.id.replace('.', '')})
+    as.length !== 0 && as.forEach((p, idx) => {
+      const pid = Array.from(as).slice(0, idx).reverse().find(sliced => sliced.tagName.localeCompare(p.tagName) < 0);
+      alist.push({text: p.innerText, id: p.id.replace('.', ''), tags: p.tagName, pid: pid ? pid.id.replace('.', '') : null});
     })
     alist.length !== 0 && parent.postMessage({index: alist}, "*");
   }});
 
   window.addEventListener('message', (e) => {
     if(!e.data.origin) return;
+    
     const as = document.querySelectorAll('.anchor-link');
     as.length !== 0 && as.forEach(a => {
       const href =  `${e.data.origin.slice(0, e.data.origin.length)}${a.href.slice(a.href.indexOf('#'), a.href.length)}`.replace('.', '')
@@ -45,7 +56,7 @@
     if(!e.data.anchorDestination) return;
     const uri = decodeURIComponent(e.data.anchorDestination).replace(/^#/, '');
     const anc = document.getElementById(uri);
-    anc.scrollIntoView()
+    anc.scrollIntoView({behavior: 'smooth'})
   })
   
   
