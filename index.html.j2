@@ -45,7 +45,8 @@
     
     const as = document.querySelectorAll('.anchor-link');
     as.length !== 0 && as.forEach(a => {
-      const href =  `${e.data.origin.slice(0, e.data.origin.length)}${a.href.slice(a.href.indexOf('#'), a.href.length)}`.replace('.', '')
+      console.log(a)
+      const href =  `${e.data.origin.slice(0, e.data.origin.length)}${a.href.slice(a.href.indexOf('#'), a.href.length).replace('.', '')}`
       a.href = href;
       a.target = '_parent';
       a.parentElement.id = `${a.parentElement.id}`.replace('.', '')
