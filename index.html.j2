@@ -1,14 +1,19 @@
 {% extends 'classic/index.html.j2'%}
 
-{% block html_head_css %}
-<style type='text/css'>
+{%- block html_head_css %}
+<style>
 #notebook-container.container {
     width: 100%;
-    padding: 0;
+   
   }
+#notebook {
+  padding: 0 !important;
+  height: max-content !important;
+}
 </style>
+
   
-{% endblock html_head_css %}
+{%- endblock html_head_css %}
 
 {% block footer_js %}
 {% block yennefer_footer %}
@@ -45,7 +50,6 @@
     
     const as = document.querySelectorAll('.anchor-link');
     as.length !== 0 && as.forEach(a => {
-      console.log(a)
       const href =  `${e.data.origin.slice(0, e.data.origin.length)}${a.href.slice(a.href.indexOf('#'), a.href.length).replace('.', '')}`
       a.href = href;
       a.target = '_parent';
@@ -59,8 +63,6 @@
     const anc = document.getElementById(uri);
     anc.scrollIntoView({behavior: 'smooth'})
   })
-  
-  
 </script>
 {% endblock yennefer_footer %}
 
